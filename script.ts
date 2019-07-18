@@ -23,7 +23,30 @@ class Player {
     return this._symbol.toUpperCase();
   }
 }
+class Square extends HTMLSpanElement {
+  constructor(
+    private _symbol: string,
+    private _cb: Function,
+    private _dimension: number,
+    private _rowPos: number,
+    private _colPos: number
+  ) {
+    super();
+    this.onclick = () => {
+      this.cb(this._rowPos, this._colPos);
+    };
+  }
 
+  get symbol(): string {
+    return this._symbol;
+  }
+  get cb(): Function {
+    return this._cb;
+  }
+  get dimension(): number {
+    return this._dimension;
+  }
+}
 class Board {
   private _symbolArray: string[][];
   constructor(private _rows: number, private _cols: number) {
@@ -51,7 +74,6 @@ class Board {
     return this._symbolArray[row][col] !== "";
   }
 }
-
 enum GameStatus {
   InProgress,
   Completed
@@ -71,7 +93,7 @@ class Game {
     if (rows !== cols) {
       throw new Error("Game Error: rows and cols values must be equal!");
     }
-    if (rows < 3 || cols < 0) {
+    if (rows < Game.minboardSize || cols < Game.minboardSize) {
       throw new Error(
         `Game Error: value of rows and cols must be greater or equal to ${
           Game.minboardSize
@@ -214,13 +236,29 @@ class Game {
 // console.log(game.nextMove(2, 2));
 // game.printSummary();
 
-const game = new Game(5, 5);
-game.addPlayer(new Player("John wick", "X"));
-game.addPlayer(new Player("The rock", "Y"));
-console.log(game.nextMove(3, 1));
-console.log(game.nextMove(3, 2));
-console.log(game.nextMove(2, 2));
-console.log(game.nextMove(2, 3));
-console.log(game.nextMove(1, 3));
-console.log(game.nextMove(1, 4));
-game.printSummary();
+// const game = new Game(5, 5);
+// game.addPlayer(new Player("John wick", "X"));
+// game.addPlayer(new Player("The rock", "Y"));
+// console.log(game.nextMove(3, 1));
+// console.log(game.nextMove(3, 2));
+// console.log(game.nextMove(2, 2));
+// console.log(game.nextMove(2, 3));
+// console.log(game.nextMove(1, 3));
+// console.log(game.nextMove(1, 4));
+// game.printSummary();
+
+const game = new Game(4, 4);
+const ticTacToeBoardElement = document.createElement("div");
+ticTacToeBoardElement.className = "ticTacToe";
+ticTacToeBoardElement.style.width = 135 * game.board.cols + "";
+document.body.appendChild(ticTacToeBoardElement);
+for (let i = 0; i < game.board.cols; i++) {
+  const column = document.createElement("div");
+  column.className = "column";
+  for (let j = 0; j < game.board.rows; j++) {
+    const span = document.createElement("span");
+    span.className = "square";
+    column.appendChild(span);
+  }
+  ticTacToeBoardElement.appendChild(column);
+}

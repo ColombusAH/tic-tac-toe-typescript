@@ -21,8 +21,8 @@ body {
 .ticTacToe {
   display: flex;
   justify-content: space-between;
-  width: 400px;
-  height: 400px;
+  width: 405px;
+  height: 405px;
   padding: 5px;
   border: 1px solid #e4e4e4;
 }
