@@ -29,12 +29,12 @@ class Player {
 class Board {
   private _symbolArray: string[][];
   /**
-   * constructor: create board by dimensions
+   * constructor: create board by dimensions by <row,col> , not realy needed but for abstraction
    */
-  constructor(private _rows: number, private _cols: number) {
-    this._symbolArray = new Array(this._rows);
-    for (let i = 0; i < this._symbolArray.length; i++) {
-      this._symbolArray[i] = new Array(this._cols).fill("");
+  constructor(private _dim: number) {
+    this._symbolArray = new Array(this._dim);
+    for (let i = 0; i < this._dim; i++) {
+      this._symbolArray[i] = new Array(this._dim).fill("");
     }
   }
 
@@ -43,10 +43,10 @@ class Board {
   }
 
   get rows(): number {
-    return this._rows;
+    return this._dim;
   }
   get cols(): number {
-    return this._cols;
+    return this._dim;
   }
   print(): void {
     console.log(this._symbolArray);
@@ -85,7 +85,7 @@ class Game {
         }!`
       );
     }
-    this._board = new Board(rows, cols);
+    this._board = new Board(rows);
   }
 
   get players(): Player[] {
@@ -116,6 +116,7 @@ class Game {
     }
     this._history.push(record);
   }
+
   printSummary(): void {
     let summary = "Game InProgress";
     if (this.status === GameStatus.Completed) {
@@ -150,7 +151,9 @@ class Game {
    *
    * @param row  row selected
    * @param col col selected
-   * desc: check if after selection we have a  winner
+   * desc: find 3 same symbols for NXN matrix , change status game if we have a winner.
+   * return : status game .
+   *
    */
   private updateStatusGame(row: number, col: number): GameStatus {
     let cnt = 0;
@@ -193,6 +196,14 @@ class Game {
     return GameStatus.InProgress;
   }
 
+  /**
+   *
+   * @param row  row selected
+   * @param col col selected
+   * desc: player move logic
+   * return : true/false if succeed / fail
+   *
+   */
   nextMove(row: number, col: number): boolean {
     if (
       this.status === GameStatus.Completed ||
@@ -214,8 +225,10 @@ class Game {
   }
 }
 
-// ***************************** Code For UI *****************************
+//***************************** EX Requirements done *****************************
 
+// ***************************** Code For UI (start) *****************************
+// *****************************
 const data = {
   playerOneName: "",
   playerTwoName: "",
@@ -290,12 +303,13 @@ function initGame() {
 
   document.body.appendChild(ticTacToeBoardElement);
 }
+//*****************************Code For UI (end) *****************************
 
 // ***************************** SIMPLE TEST *****************************
 
 // const game = new Game(3, 3);
 // game.addPlayer(new Player("John wick", "X"));
-// game.addPlayer(new Player("The rock", "Y"));
+// game.addPlayer(new Player("The rock", "O"));
 // console.log(game.nextMove(0, 0));
 // console.log(game.nextMove(0, 2));
 // console.log(game.nextMove(1, 1));
