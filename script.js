@@ -245,8 +245,12 @@ function initGame() {
         inputs.style.display = "none";
     var playTitleEl = document.querySelector("#playTitle");
     var ticTacToeBoardElement = document.createElement("div");
-    if (ulHistory)
+    if (ulHistory) {
         ulHistory.className = "ul--history";
+        var greet = document.createElement("li");
+        greet.innerHTML = "Good luck!";
+        ulHistory.appendChild(greet);
+    }
     var game = new Game(data.boardSize, data.boardSize);
     game.addPlayer(new Player(data.playerOneName, "X"));
     game.addPlayer(new Player(data.playerTwoName, "O"));

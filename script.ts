@@ -243,8 +243,12 @@ function initGame() {
   const playTitleEl = document.querySelector("#playTitle");
   const ticTacToeBoardElement = document.createElement("div");
 
-  if (ulHistory) ulHistory.className = "ul--history";
-  
+  if (ulHistory) {
+    ulHistory.className = "ul--history";
+    const greet = document.createElement("li");
+    greet.innerHTML = "Good luck!";
+    ulHistory.appendChild(greet);
+  }
 
   const game = new Game(data.boardSize, data.boardSize);
 
