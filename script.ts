@@ -244,6 +244,7 @@ function initGame() {
   const ticTacToeBoardElement = document.createElement("div");
 
   if (ulHistory) ulHistory.className = "ul--history";
+  
 
   const game = new Game(data.boardSize, data.boardSize);
 
