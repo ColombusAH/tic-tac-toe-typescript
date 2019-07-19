@@ -9,6 +9,7 @@ body {
 
 body {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   vertical-align: center;
@@ -16,6 +17,15 @@ body {
   align-content: center;
   font-family: "Open Sans", sans-serif;
   background: linear-gradient(top, #222, #333);
+}
+
+.div--inputWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: center;
+  align-content: center;
+  align-items: center;
 }
 
 .ticTacToe {
@@ -36,9 +46,36 @@ body {
   width: 125px;
   height: 125px;
   border: 1px solid #e4e4e4;
-  color: #e4e4e4;
-  font-size: 5em;
+  color: #04b6ec;
+  font-size: 2em;
   font-weight: 100;
   text-align: center;
   padding: 20px;
+}
+
+.div--GameOptions {
+  width: 20em;
+  height: 20em;
+  border: 2px black solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: center;
+  align-content: center;
+  align-items: center;
+}
+
+.btn--play {
+  margin-top: 1em;
+  border-radius: 10px;
+  width: 10em;
+  background-color: #ca1442;
+}
+
+.ul--history {
+  border: 2px black solid;
+  margin-left: 3em;
+  margin-right: 3em;
+  min-height: 2em;
+  min-width: 10em;
 }

@@ -1,6 +1,9 @@
 class Player {
   private static readonly symbolLen = 1;
   private static readonly nameMinLen = 1;
+  /**
+   * constructor: check validity of parameters and create player
+   */
   constructor(private _name: string, private _symbol: string) {
     if (_name.length < Player.nameMinLen) {
       throw new Error("Player error: The player name cannot be empty!");
@@ -10,8 +13,8 @@ class Player {
         `Player error: The player symbol length must be ${Player.nameMinLen}!`
       );
     }
-    if (this.symbol !== "X" && this.symbol !== "Y") {
-      throw new Error(`Player error: The player symbol must be 'x' or 'y'`);
+    if (this.symbol !== "X" && this.symbol !== "O") {
+      throw new Error(`Player error: The player symbol must be 'x' or 'o'`);
     }
   }
 
@@ -23,32 +26,11 @@ class Player {
     return this._symbol.toUpperCase();
   }
 }
-class Square extends HTMLSpanElement {
-  constructor(
-    private _symbol: string,
-    private _cb: Function,
-    private _dimension: number,
-    private _rowPos: number,
-    private _colPos: number
-  ) {
-    super();
-    this.onclick = () => {
-      this.cb(this._rowPos, this._colPos);
-    };
-  }
-
-  get symbol(): string {
-    return this._symbol;
-  }
-  get cb(): Function {
-    return this._cb;
-  }
-  get dimension(): number {
-    return this._dimension;
-  }
-}
 class Board {
   private _symbolArray: string[][];
+  /**
+   * constructor: create board by dimensions
+   */
   constructor(private _rows: number, private _cols: number) {
     this._symbolArray = new Array(this._rows);
     for (let i = 0; i < this._symbolArray.length; i++) {
@@ -89,6 +71,9 @@ class Game {
   private _playerTurn = 0;
   private _history = [] as string[];
 
+  /**
+   * constructor: check validy of cols and rows and create the game object
+   */
   constructor(rows: number, cols: number) {
     if (rows !== cols) {
       throw new Error("Game Error: rows and cols values must be equal!");
@@ -112,7 +97,13 @@ class Game {
   get status(): number {
     return this._status;
   }
-
+  getHistory(): string[] {
+    const history_copy = this._history.slice();
+    return history_copy;
+  }
+  /**
+   * addMoveToHistory: add the last move to the history array
+   */
   addMoveToHistory(
     row: number,
     col: number,
@@ -155,6 +146,12 @@ class Game {
     this.players[this.players.length] = newPlayer;
   }
 
+  /**
+   *
+   * @param row  row selected
+   * @param col col selected
+   * desc: check if after selection we have a  winner
+   */
   private updateStatusGame(row: number, col: number): GameStatus {
     let cnt = 0;
     const pSymbol = this.players[this._playerTurn].symbol;
@@ -192,6 +189,7 @@ class Game {
         return GameStatus.Completed;
       }
     }
+
     return GameStatus.InProgress;
   }
 
@@ -206,6 +204,7 @@ class Game {
     ) {
       return false;
     }
+
     const curnentPlayer = this.players[this._playerTurn];
     this.board.symbolArray[row][col] = curnentPlayer.symbol;
     this._status = this.updateStatusGame(row, col);
@@ -214,6 +213,84 @@ class Game {
     return true;
   }
 }
+
+// ***************************** Code For UI *****************************
+
+const data = {
+  playerOneName: "",
+  playerTwoName: "",
+  boardSize: 0
+};
+
+function initGame() {
+  const player1Input = document.querySelector("#player1");
+  const player2Input = document.querySelector("#player2");
+  const boardSizeInput = document.querySelector("#bordSize");
+  const ulHistory = document.querySelector("#ul--history");
+
+  if (player1Input && player2Input && boardSizeInput) {
+    data.playerOneName = (<HTMLInputElement>player1Input).value;
+    data.playerTwoName = (<HTMLInputElement>player2Input).value;
+    data.boardSize = parseInt((<HTMLSelectElement>boardSizeInput).value);
+
+    if (data.playerOneName.length === 0 || data.playerTwoName.length === 0) {
+      alert("Names are Empty , please enter name");
+      return;
+    }
+  }
+  const inputs = document.querySelector(".div--GameOptions");
+  if (inputs) (<HTMLDivElement>inputs).style.display = "none";
+  const playTitleEl = document.querySelector("#playTitle");
+  const ticTacToeBoardElement = document.createElement("div");
+
+  if (ulHistory) ulHistory.className = "ul--history";
+
+  const game = new Game(data.boardSize, data.boardSize);
+
+  game.addPlayer(new Player(data.playerOneName, "X"));
+  game.addPlayer(new Player(data.playerTwoName, "O"));
+
+  if (playTitleEl !== null) playTitleEl.innerHTML = "Play!";
+
+  ticTacToeBoardElement.className = "ticTacToe";
+  ticTacToeBoardElement.style.width = 135 * game.board.cols + "px";
+
+  for (let i = 0; i < game.board.cols; i++) {
+    const column = document.createElement("div");
+    column.className = "column";
+    for (let j = 0; j < game.board.rows; j++) {
+      const span = document.createElement("span");
+      span.className = "square";
+      span.style.fontSize = `${5 - game.board.cols / 1.5}em`;
+      span.onclick = () => {
+        game.nextMove(i, j);
+        const hist = game.getHistory();
+        span.innerText = game.board.symbolArray[i][j];
+        if (ulHistory) {
+          const li = document.createElement("li");
+          li.innerHTML = hist[hist.length - 1];
+          ulHistory.appendChild(li);
+        }
+
+        if (game.status === GameStatus.Completed) {
+          setTimeout(() => {
+            const ans = window.confirm("Play again?");
+            if (ans) {
+              location.reload();
+            }
+          }, 100);
+        }
+      };
+      column.appendChild(span);
+    }
+    ticTacToeBoardElement.appendChild(column);
+  }
+
+  document.body.appendChild(ticTacToeBoardElement);
+}
+
+// ***************************** SIMPLE TEST *****************************
+
 // const game = new Game(3, 3);
 // game.addPlayer(new Player("John wick", "X"));
 // game.addPlayer(new Player("The rock", "Y"));
@@ -246,19 +323,3 @@ class Game {
 // console.log(game.nextMove(1, 3));
 // console.log(game.nextMove(1, 4));
 // game.printSummary();
-
-const game = new Game(4, 4);
-const ticTacToeBoardElement = document.createElement("div");
-ticTacToeBoardElement.className = "ticTacToe";
-ticTacToeBoardElement.style.width = 135 * game.board.cols + "";
-document.body.appendChild(ticTacToeBoardElement);
-for (let i = 0; i < game.board.cols; i++) {
-  const column = document.createElement("div");
-  column.className = "column";
-  for (let j = 0; j < game.board.rows; j++) {
-    const span = document.createElement("span");
-    span.className = "square";
-    column.appendChild(span);
-  }
-  ticTacToeBoardElement.appendChild(column);
-}

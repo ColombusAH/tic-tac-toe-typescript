@@ -7,23 +7,26 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <!-- <div class="ticTacToe">
-            <div class="column">
-                <span class="square">X</span>
-                <span class="square">O</span>
-                <span class="square">X</span>
-            </div>
-            <div class="column">
-                <span class="square">O</span>
-                <span class="square">X</span>
-                <span class="square">O</span>
-            </div>
-            <div class="column">
-                <span class="square">O</span>
-                <span class="square">X</span>
-                <span class="square">X</span>
-            </div>
-        </div> -->
+    <div class="div--GameOptions" > 
+        <label for="player1">Player1:</label>
+        <input type="text" id="player1" name="player1Name" placeholder="John wick" value="John wick">
+    
+        <label for="player2">Player2:</label>
+        <input type="text" id="player2" name="player2Name" placeholder="God" value="God">
+    
+        <label for="bordSize">Board Size</label>
+        <select id="bordSize" name="boardSize">
+            <option value="3">3X3</option>
+            <option value="4">4X4</option>
+            <option value="5">5X5</option>
+            <option value="6">6X6</option>
+        </select>
+        <button type="button" onclick="initGame()" class="btn--play">Play!</button>
+    </div>
+       
+            <ul id="ul--history">
+
+            </ul>
         
         <script src="script.js" ></script>
     </body>
