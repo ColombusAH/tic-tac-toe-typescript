@@ -44,7 +44,7 @@ body {
   padding: 20px;
 }
 
-.div--GameOptions {
+.GameInitialInputs {
   width: 20em;
   height: 20em;
   border: 2px black solid;
@@ -56,14 +56,14 @@ body {
   align-items: center;
 }
 
-.btn--play {
+.GameInitialInputs__playBtn {
   margin-top: 1em;
   border-radius: 10px;
   width: 10em;
   background-color: #ca1442;
 }
 
-.ul--history {
+.history {
   border: 2px black solid;
   margin-left: 3em;
   margin-right: 3em;

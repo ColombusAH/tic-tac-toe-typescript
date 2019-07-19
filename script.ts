@@ -226,7 +226,7 @@ function initGame() {
   const player1Input = document.querySelector("#player1");
   const player2Input = document.querySelector("#player2");
   const boardSizeInput = document.querySelector("#bordSize");
-  const ulHistory = document.querySelector("#ul--history");
+  const ulHistory = document.querySelector("#history");
 
   if (player1Input && player2Input && boardSizeInput) {
     data.playerOneName = (<HTMLInputElement>player1Input).value;
