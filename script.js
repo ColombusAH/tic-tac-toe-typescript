@@ -230,7 +230,7 @@ function initGame() {
     var player1Input = document.querySelector("#player1");
     var player2Input = document.querySelector("#player2");
     var boardSizeInput = document.querySelector("#bordSize");
-    var ulHistory = document.querySelector("#ul--history");
+    var ulHistory = document.querySelector("#history");
     if (player1Input && player2Input && boardSizeInput) {
         data.playerOneName = player1Input.value;
         data.playerTwoName = player2Input.value;
@@ -240,13 +240,12 @@ function initGame() {
             return;
         }
     }
-    var inputs = document.querySelector(".div--GameOptions");
+    var inputs = document.querySelector(".GameInitialInputs");
     if (inputs)
         inputs.style.display = "none";
-    var playTitleEl = document.querySelector("#playTitle");
     var ticTacToeBoardElement = document.createElement("div");
     if (ulHistory) {
-        ulHistory.className = "ul--history";
+        ulHistory.className = "history";
         var greet = document.createElement("li");
         greet.innerHTML = "Good luck!";
         ulHistory.appendChild(greet);
@@ -254,8 +253,6 @@ function initGame() {
     var game = new Game(data.boardSize, data.boardSize);
     game.addPlayer(new Player(data.playerOneName, "X"));
     game.addPlayer(new Player(data.playerTwoName, "O"));
-    if (playTitleEl !== null)
-        playTitleEl.innerHTML = "Play!";
     ticTacToeBoardElement.className = "ticTacToe";
     ticTacToeBoardElement.style.width = 135 * game.board.cols + "px";
     var _loop_1 = function (i) {

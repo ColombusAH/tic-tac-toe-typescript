@@ -238,13 +238,12 @@ function initGame() {
       return;
     }
   }
-  const inputs = document.querySelector(".div--GameOptions");
+  const inputs = document.querySelector(".GameInitialInputs");
   if (inputs) (<HTMLDivElement>inputs).style.display = "none";
-  const playTitleEl = document.querySelector("#playTitle");
   const ticTacToeBoardElement = document.createElement("div");
 
   if (ulHistory) {
-    ulHistory.className = "ul--history";
+    ulHistory.className = "history";
     const greet = document.createElement("li");
     greet.innerHTML = "Good luck!";
     ulHistory.appendChild(greet);
@@ -254,8 +253,6 @@ function initGame() {
 
   game.addPlayer(new Player(data.playerOneName, "X"));
   game.addPlayer(new Player(data.playerTwoName, "O"));
-
-  if (playTitleEl !== null) playTitleEl.innerHTML = "Play!";
 
   ticTacToeBoardElement.className = "ticTacToe";
   ticTacToeBoardElement.style.width = 135 * game.board.cols + "px";
