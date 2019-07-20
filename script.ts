@@ -29,7 +29,8 @@ class Player {
 class Board {
   private _symbolArray: string[][];
   /**
-   * constructor: create board by dimensions by <row,col> , not realy needed but for abstraction
+   * constructor: create board by dimensions by <_dim> , not realy needed but for abstraction
+   * @param _dim : the dimension
    */
   constructor(private _dim: number) {
     this._symbolArray = new Array(this._dim);
@@ -73,6 +74,7 @@ class Game {
 
   /**
    * constructor: check validy of cols and rows and create the game object
+   *
    */
   constructor(rows: number, cols: number) {
     if (rows !== cols) {
@@ -227,96 +229,20 @@ class Game {
 
 //***************************** EX Requirements done *****************************
 
-// ***************************** Code For UI (start) *****************************
-// *****************************
-const data = {
-  playerOneName: "",
-  playerTwoName: "",
-  boardSize: 0
-};
-
-function initGame() {
-  const player1Input = document.querySelector("#player1");
-  const player2Input = document.querySelector("#player2");
-  const boardSizeInput = document.querySelector("#bordSize");
-  const ulHistory = document.querySelector("#history");
-
-  if (player1Input && player2Input && boardSizeInput) {
-    data.playerOneName = (<HTMLInputElement>player1Input).value;
-    data.playerTwoName = (<HTMLInputElement>player2Input).value;
-    data.boardSize = parseInt((<HTMLSelectElement>boardSizeInput).value);
-
-    if (data.playerOneName.length === 0 || data.playerTwoName.length === 0) {
-      alert("Names are Empty , please enter name");
-      return;
-    }
-  }
-  const inputs = document.querySelector(".GameInitialInputs");
-  if (inputs) (<HTMLDivElement>inputs).style.display = "none";
-  const ticTacToeBoardElement = document.createElement("div");
-
-  if (ulHistory) {
-    ulHistory.className = "history";
-    const greet = document.createElement("li");
-    greet.innerHTML = "Good luck!";
-    ulHistory.appendChild(greet);
-  }
-
-  const game = new Game(data.boardSize, data.boardSize);
-
-  game.addPlayer(new Player(data.playerOneName, "X"));
-  game.addPlayer(new Player(data.playerTwoName, "O"));
-
-  ticTacToeBoardElement.className = "ticTacToe";
-  ticTacToeBoardElement.style.width = 135 * game.board.cols + "px";
-
-  for (let i = 0; i < game.board.cols; i++) {
-    const column = document.createElement("div");
-    column.className = "column";
-    for (let j = 0; j < game.board.rows; j++) {
-      const span = document.createElement("span");
-      span.className = "square";
-      span.style.fontSize = `${5 - game.board.cols / 1.5}em`;
-      span.onclick = () => {
-        game.nextMove(i, j);
-        const hist = game.getHistory();
-        span.innerText = game.board.symbolArray[i][j];
-        if (ulHistory) {
-          const li = document.createElement("li");
-          li.innerHTML = hist[hist.length - 1];
-          ulHistory.appendChild(li);
-        }
-
-        if (game.status === GameStatus.Completed) {
-          setTimeout(() => {
-            const ans = window.confirm("Play again?");
-            if (ans) {
-              location.reload();
-            }
-          }, 100);
-        }
-      };
-      column.appendChild(span);
-    }
-    ticTacToeBoardElement.appendChild(column);
-  }
-
-  document.body.appendChild(ticTacToeBoardElement);
-}
-//*****************************Code For UI (end) *****************************
-
 // ***************************** SIMPLE TEST *****************************
 
-// const game = new Game(3, 3);
-// game.addPlayer(new Player("John wick", "X"));
-// game.addPlayer(new Player("The rock", "O"));
-// console.log(game.nextMove(0, 0));
-// console.log(game.nextMove(0, 2));
-// console.log(game.nextMove(1, 1));
-// console.log(game.nextMove(1, 2));
-// console.log(game.nextMove(2, 2));
-// console.log(game.nextMove(2, 1));
-// game.printSummary();
+const game = new Game(3, 3);
+game.addPlayer(new Player("John wick", "X"));
+game.addPlayer(new Player("The rock", "O"));
+console.log(game.nextMove(0, 0));
+console.log(game.nextMove(0, 2));
+console.log(game.nextMove(1, 1));
+game.printSummary();
+console.log(game.nextMove(1, 2));
+console.log(game.nextMove(2, 2));
+console.log(game.nextMove(2, 1));
+game.printSummary();
+game.board.print();
 
 // const game = new Game(4, 4);
 // game.addPlayer(new Player("John wick", "X"));
